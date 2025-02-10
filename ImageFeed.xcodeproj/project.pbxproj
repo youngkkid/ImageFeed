@@ -46,9 +46,9 @@
 		8400C18C2D4B922D005DCE45 = {
 			isa = PBXGroup;
 			children = (
-				8420A11D2D56377C00FA8D16 /* SingleImageView */,
 				8420A1162D56054300FA8D16 /* Profile */,
 				84F0F6742D4D19BB007DB58A /* ImageList */,
+				8420A11D2D56377C00FA8D16 /* SingleImageView */,
 				8400C1972D4B922D005DCE45 /* ImageFeed */,
 				8400C1962D4B922D005DCE45 /* Products */,
 			);
