@@ -7,12 +7,14 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     // создаем аутлет для таблицы
     @IBOutlet private var tableView: UITableView!
-//    создаем массив с нашими мок-данными (где с помощью .map мы превращаем каждый элемент массива из числа в строку)
+    //    создаем массив с нашими мок-данными (где с помощью .map мы превращаем каждый элемент массива из числа в строку)
     private let photoName: [String] = Array(0...20).map{"\($0)"}
-//    форматируем дату
+    //    вводим константу для ShowSingleImage
+    private let showSingleImageIdentifier = "ShowSingleImage"
+    //    форматируем дату
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -20,29 +22,40 @@ class ImagesListViewController: UIViewController {
         
         return formatter
     }()
-   
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageIdentifier {
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            let image = UIImage(named: photoName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        определяем dataSource и delegate
+        //        определяем dataSource и delegate
         tableView.dataSource = self
         tableView.delegate = self
-//        устанавливаем высоту ячейки
+        //        устанавливаем высоту ячейки
         tableView.rowHeight = 200
-//        создаем отступ между ячейками
+        //        создаем отступ между ячейками
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
     }
-
-
 }
 
-
 // создаем два расширения (одно для dataSource, а другое для delegate)
-
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
-//    метод, который задает высоту каждой ячейке в зависимости от размера фото в ней
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageIdentifier, sender: indexPath)
+    }
+    //    метод, который задает высоту каждой ячейке в зависимости от размера фото в ней
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photoName[indexPath.row]) else {
             return 0
@@ -72,7 +85,6 @@ extension ImagesListViewController: UITableViewDataSource {
         return imagesListCell
     }
     
-    
 }
 
 extension ImagesListViewController {
@@ -85,6 +97,7 @@ extension ImagesListViewController {
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "heart_button_on") : UIImage(named: "heart_button_off")
         cell.likeButton.setImage(likeImage, for: .normal)
-       
+        
     }
 }
+
