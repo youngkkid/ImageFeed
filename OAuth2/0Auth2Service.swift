@@ -19,11 +19,11 @@ final class OAuth2Service {
     
     static let shared = OAuth2Service()
     
-    private let tokenStorage = OAuth2TokenStorage()
+    let tokenStorage = OAuth2TokenStorage()
     
     private init() {}
     
-    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
+     func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseUrl = "https://unsplash.com"
         let path = "/oauth/token"
         
@@ -53,46 +53,6 @@ final class OAuth2Service {
         return request
     }
     
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else { return }
-        
-        let task = URLSession.shared.data(for: request) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    let accessToken = responseData.accessToken
-                    self.tokenStorage.storeToken(accessToken)
-                    DispatchQueue.main.async {
-                        completion(.success(accessToken))
-                    }
-                } catch {
-                    print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            case .failure(let error):
-                if let networkError = error as? NetworkError {
-                    switch networkError {
-                    case .httpStatusCode(let statusCode):
-                        print("Received HTTP error with status code: \(statusCode)")
-                    case .urlRequestError(let requestError):
-                        print("URL Request error occurred: \(requestError.localizedDescription)")
-                    case .urlSessionError:
-                        print("An unknown URLSession error occurred.")
-                    }
-                } else {
-                    print("An unknown error occurred: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async{
-                    completion(.failure(error))
-                }
-            }
-        }
-        
-        task.resume()
-    }
     
     func isAccessTokenAvailable() -> Bool {
         return tokenStorage.token != nil
