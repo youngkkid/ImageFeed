@@ -20,8 +20,6 @@ final class AuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -33,59 +31,28 @@ final class AuthViewController: UIViewController {
         webViewController.delegate = self
     }
     
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = oAuth2Service.makeOAuthTokenRequest(code: code) else { return }
-        
-        let task = URLSession.shared.data(for: request) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let data):
-                do {
-                    let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    let accessToken = responseData.accessToken
-                    self.oAuth2Service.tokenStorage.storeToken(accessToken)
-                    DispatchQueue.main.async {
-                        completion(.success(accessToken))
-                    }
-                } catch {
-                    print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            case .failure(let error):
-                if let networkError = error as? NetworkError {
-                    switch networkError {
-                    case .httpStatusCode(let statusCode):
-                        print("Received HTTP error with status code: \(statusCode)")
-                    case .urlRequestError(let requestError):
-                        print("URL Request error occurred: \(requestError.localizedDescription)")
-                    case .urlSessionError:
-                        print("An unknown URLSession error occurred.")
-                    }
-                } else {
-                    print("An unknown error occurred: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async{
-                    completion(.failure(error))
-                }
-            }
-        }
-        
-        task.resume()
-    }
-    
+   
     @IBAction func didTapAuthButton(_ sender: UIButton) {
         performSegue(withIdentifier: showWebViewSegueIdentifier, sender: self)
     }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
+    
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
-    }
+            oAuth2Service.fetchOAuthToken(code: code) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    delegate?.authViewController(self, didAuthenticateWithCode: code)
+                case .failure:
+                    break
+                }
+            }
+        }
 
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
-}
+    
+    }
