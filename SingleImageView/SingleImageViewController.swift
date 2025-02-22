@@ -11,7 +11,6 @@ import UIKit
 
      var image: UIImage? {
          didSet {
-//             проверяем, было ли ранее загружено view, дабы избежать крэша
              guard isViewLoaded, let image else {return}
              imageView.image = image
              imageView.frame.size = image.size
@@ -27,7 +26,6 @@ import UIKit
          scrollView.minimumZoomScale = 0.1
          scrollView.maximumZoomScale = 1.25
          
-//       устанавливаем размер imageView после присвоения
          guard let image else {return}
          imageView.image = image
          imageView.frame.size = image.size
@@ -52,7 +50,6 @@ import UIKit
      }
      
      @IBAction private func didTapBackButton(_ sender: UIButton) {
-//         скрываем модальный экран с помощью вызова метода dismiss (благодаря этому методу, мы можем возвращаться к imageListViewController)
          dismiss(animated: true, completion: nil)
      }
      
@@ -63,7 +60,6 @@ import UIKit
      }
  }
 
-// с помощью расширения добавляем метод, с помощью которого приложению понятно, какое изображение увеличивать
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
