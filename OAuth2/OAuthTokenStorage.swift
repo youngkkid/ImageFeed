@@ -7,7 +7,11 @@
 
 import Foundation
 
+
 final class OAuth2TokenStorage {
+    
+    static let shared = OAuth2TokenStorage()
+    
     private(set) var token: String? {
         get {
             return UserDefaults.standard.string(forKey: "accessToken")
@@ -17,9 +21,9 @@ final class OAuth2TokenStorage {
             UserDefaults.standard.set(newValue, forKey: "accessToken")
         }
     }
-
     func storeToken(_ newToken: String) {
         self.token = newToken
+        print("Token stored: \(newToken)")
     }
 
     func clearToken() {
