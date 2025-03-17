@@ -311,7 +311,7 @@
         <!--Navigation Controller-->
         <scene sceneID="vgc-uW-eZ3">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bP4-aG-cS7" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bP4-aG-cS7" customClass="NavigationController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bhC-9v-syY">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>

@@ -1,19 +1,22 @@
+//
+//  ProfileViewController .swift
+//  ImageFeed
+//
+//  Created by Илья Ануфриев on 22.02.2025.
+//
+
 import UIKit
 import Kingfisher
 
-
-//MARK: - ProfileViewController
 final class ProfileViewController: UIViewController {
-    
-    //MARK: - Private constants
+
     private enum UIConstants {
         static let nameLabelFontSize: CGFloat = 16
         static let loginNameLabelFontSize: CGFloat = 13
         static let descriptionLabelFontSize: CGFloat = 13
         static let imageSize: CGFloat = 70
     }
-    
-    //MARK: - Private properties
+
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private var avatarImageView: UIImageView = {
@@ -52,8 +55,7 @@ final class ProfileViewController: UIViewController {
         button.tintColor = UIColor(red: 0.96, green: 0.41, blue: 0.42, alpha: 1)
         return button
     }()
-    
-    //MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         profileImageServiceObserver = NotificationCenter.default.addObserver(
@@ -66,10 +68,9 @@ final class ProfileViewController: UIViewController {
         updateAvatar()
         initialize()
     }
-    
-    //MARK: - Private methods
+
     private func initialize() {
-        self.view.backgroundColor = UIColor(named: "ypBlack")
+        self.view.backgroundColor = UIColor(named: "YP Black")
         self.nameLabel.text = ProfileService.shared.profile?.name
         self.loginNameLabel.text = ProfileService.shared.profile?.loginName
         self.descriptionLabel.text = ProfileService.shared.profile?.bio

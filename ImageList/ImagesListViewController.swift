@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ViewController .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 30.01.2025.

@@ -1,10 +1,15 @@
+//
+//  SplashViewController .swift
+//  ImageFeed
+//
+//  Created by Илья Ануфриев on 22.02.2025.
+//
+
 import UIKit
 import ProgressHUD
 
-//MARK: - SplashViewController
 final class SplashViewController: UIViewController {
-    
-    //MARK: - Private Properties
+
     private let showAuthenticationScreenSegueIdentifier = "showAuthentificationScreen"
     private let alertPresenter = AlertPresenter()
     
@@ -14,7 +19,6 @@ final class SplashViewController: UIViewController {
         return view
     }()
     
-    //MARK: - Lifecycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let token = OAuth2TokenStorage.shared.token {
@@ -32,31 +36,26 @@ final class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         initialize()
-        alertPresenter.delegate = self
+        alertPresenter.viewController = self
     }
     
-    //MARK: - Private Methods
     private func switchToTabBarController() {
-        guard let windowScene = view.window?.windowScene else {
+        guard let window = UIApplication.shared.windows.first else {
             assertionFailure("Invalid window configuration")
             return
         }
-        let window = UIWindow(windowScene: windowScene)
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(identifier: "TabBarViewController")
         window.rootViewController = tabBarController
-        window.makeKeyAndVisible()
     }
 }
 
-//MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         navigationController?.popViewController(animated: true)
         fetchOAuthToken(code)
     }
     
-
     private func fetchOAuthToken(_ code: String) {
         
         UIBlockingProgressHUD.show()
@@ -95,7 +94,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func initialize() {
-        self.view.backgroundColor = UIColor(named: "ypBlack")
+        self.view.backgroundColor = UIColor(named: "YP Black")
         
         splashImageLogo.translatesAutoresizingMaskIntoConstraints = false
         
@@ -108,7 +107,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func showLoginAlert(error: Error) {
-        alertPresenter.showAlert(title: "Что-то пошло не так",
+        alertPresenter.showAlert(title: "Что-то пошло не так(",
                                  message: "Не удалось войти в систему, \(error.localizedDescription)") {
         }
     }

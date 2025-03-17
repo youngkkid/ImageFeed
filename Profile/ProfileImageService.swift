@@ -1,16 +1,11 @@
+//
+//  ProfileImageService.swift
+//  ImageFeed
+//
+//  Created by Илья Ануфриев on 11.03.2025.
+//
+
 import UIKit
-
-struct UserResult: Codable {
-    let profileImage: ProfileImage?
-
-    private enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-}
-
-struct ProfileImage: Codable {
-    let small: String?
-}
 
 private enum ProfileImageServiceError: Error {
     case invalidRequest
@@ -18,16 +13,13 @@ private enum ProfileImageServiceError: Error {
     case missingToken
 }
 
-
 final class ProfileImageService {
     static let shared = ProfileImageService()
-   
-    
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
 
     private var urlSession = URLSession.shared
     private var task: URLSessionTask?
     private(set) var avatarURL: String?
-    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
    
     private init() {}
     
@@ -56,7 +48,7 @@ final class ProfileImageService {
                     NotificationCenter.default.post(name: ProfileImageService.didChangeNotification, object: self, userInfo: ["URL": profileImageURL])
                     completion(.success(profileImageURL))
                 case .failure(let error):
-                    let errorMessage = "[objectTask]: NetworkError - \(error.localizedDescription)"
+                    let errorMessage = "[ProfileImageService.fetchProfileImageURL]: NetworkError - \(error.localizedDescription)"
                     print(errorMessage)
                     completion(.failure(error))
                 }
@@ -67,7 +59,7 @@ final class ProfileImageService {
         task.resume()
     }
     
-    func makeProfileImageRequest(token: String, username: String) -> URLRequest?{
+    private func makeProfileImageRequest(token: String, username: String) -> URLRequest?{
         var urlComponents = URLComponents()
         urlComponents.path = Constants.userRequest + username
         

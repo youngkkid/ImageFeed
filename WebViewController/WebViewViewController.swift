@@ -38,10 +38,6 @@ final class WebViewViewController: UIViewController {
         })
     }
     
-    @IBAction private func didTapBackButton(_ sender: UIButton) {
-        delegate?.webViewViewControllerDidCancel(self)
-    }
-    
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: WebViewConstants.unsplashAuthorizeURLString) else {
             print("error while creating urlComponents")
@@ -68,6 +64,11 @@ final class WebViewViewController: UIViewController {
         progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
+    
+    @IBAction private func didTapBackButton(_ sender: UIButton) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
 }
 
 extension WebViewViewController: WKNavigationDelegate {

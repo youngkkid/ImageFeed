@@ -1,5 +1,5 @@
 //
-//  OAuth2Service.swift
+//  OAuth2Service .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 18.02.2025.
@@ -15,7 +15,7 @@ struct OAuthTokenResponseBody: Decodable {
     }
 }
 
-enum AuthServiceError: Error {
+private enum AuthServiceError: Error {
     case invalidRequest
 }
 
@@ -30,38 +30,6 @@ final class OAuth2Service {
     let tokenStorage = OAuth2TokenStorage()
     
     private init() {}
-    
-    func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        let baseUrl = "https://unsplash.com"
-        let path = "/oauth/token"
-        
-        guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Invalid base url")
-            return nil
-        }
-        
-        urlComponents.path = path
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "code", value: code),
-            URLQueryItem(name: "grant_type", value: "authorization_code"),
-        ]
-        
-        guard let url = urlComponents.url else {
-            assertionFailure("Failed to create URL")
-            return nil
-        }
-        
-        print("Oauth URL: \(url)")
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        return request
-    }
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
@@ -100,11 +68,40 @@ final class OAuth2Service {
         task.resume()
     }
     
+    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
+        let baseUrl = "https://unsplash.com"
+        let path = "/oauth/token"
+        
+        guard var urlComponents = URLComponents(string: baseUrl) else {
+            print("Invalid base url")
+            return nil
+        }
+        
+        urlComponents.path = path
+        
+        urlComponents.queryItems = [
+            URLQueryItem(name: "client_id", value: Constants.accessKey),
+            URLQueryItem(name: "client_secret", value: Constants.secretKey),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "code", value: code),
+            URLQueryItem(name: "grant_type", value: "authorization_code"),
+        ]
+        
+        guard let url = urlComponents.url else {
+            assertionFailure("Failed to create URL")
+            return nil
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        return request
+    }
+    
     func isAccessTokenAvailable() -> Bool {
         return tokenStorage.token != nil
     }
-
 }
-    
-   
+
+
 

@@ -1,5 +1,5 @@
 //
-//  URLSession+data.swift
+//  OAuthTokenStorage .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 18.02.2025.
