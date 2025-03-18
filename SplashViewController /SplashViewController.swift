@@ -12,7 +12,7 @@ final class SplashViewController: UIViewController {
 
     private let showAuthenticationScreenSegueIdentifier = "showAuthentificationScreen"
     private let alertPresenter = AlertPresenter()
-    
+    private let tokenStorage = OAuth2TokenStorage()
     private let splashImageLogo: UIImageView = {
         let splashImage = UIImage(named: "auth_logo")
         let view = UIImageView(image: splashImage)
@@ -21,7 +21,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let token = OAuth2TokenStorage.shared.token {
+        if let token = tokenStorage.token {
             fetchProfile(token)
             switchToTabBarController()
         } else {
@@ -64,7 +64,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch authResult {
             case .success:
-                guard let token = OAuth2TokenStorage.shared.token else { return }
+                guard let token = tokenStorage.token else { return }
                 self.fetchProfile(token)
                 self.switchToTabBarController()
                 return

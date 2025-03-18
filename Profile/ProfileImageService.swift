@@ -20,6 +20,7 @@ final class ProfileImageService {
     private var urlSession = URLSession.shared
     private var task: URLSessionTask?
     private(set) var avatarURL: String?
+    private let tokenStorage = OAuth2TokenStorage()
    
     private init() {}
     
@@ -27,7 +28,7 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        guard let token = OAuth2TokenStorage.shared.token else {
+        guard let token = tokenStorage.token else {
             completion(.failure(ProfileImageServiceError.missingToken))
             return
         }

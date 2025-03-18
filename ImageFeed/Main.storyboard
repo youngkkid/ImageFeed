@@ -43,7 +43,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="didTapAuthButton:" destination="lrI-Eh-Fmc" eventType="touchUpInside" id="bnD-9R-9QB"/>
+                                    <action selector="didTapAuthButton:" destination="lrI-Eh-Fmc" eventType="touchUpInside" id="lCj-sh-T2W"/>
                                 </connections>
                             </button>
                         </subviews>

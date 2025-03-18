@@ -32,7 +32,12 @@ final class AuthViewController: UIViewController {
 
     override func viewDidLoad() {
     }
+    
+    @IBAction func didTapAuthButton(_ sender: UIButton) {
+        performSegue(withIdentifier: ShowWebViewSegueIdentifier, sender: self)
+    }
 }
+
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
