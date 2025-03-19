@@ -34,7 +34,7 @@ final class OAuth2Service {
         assert(Thread.isMainThread)
         
         guard  lastCode != code else {
-            print("[ProfileImageService.fetchProfileImageURL]: NetworkError - invalid Request")
+            print("[OAuth2Service.fetchOAuthToken]: NetworkError - invalid Request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -43,7 +43,7 @@ final class OAuth2Service {
         lastCode = code
         
         guard let request = makeOAuthTokenRequest(code: code) else {
-            print("[ProfileImageService.fetchProfileImageURL]: NetworkError - invalid Request")
+            print("[OAuth2Service.fetchOAuthToken]: NetworkError - invalid Request")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
