@@ -6,12 +6,10 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
 
     private let showAuthenticationScreenSegueIdentifier = "showAuthentificationScreen"
-    private let alertPresenter = AlertPresenter()
     private let tokenStorage = OAuth2TokenStorage()
     private let splashImageLogo: UIImageView = {
         let splashImage = UIImage(named: "auth_logo")
@@ -36,7 +34,6 @@ final class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         initialize()
-        alertPresenter.viewController = self
     }
     
     private func switchToTabBarController() {
@@ -107,7 +104,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func showLoginAlert(error: Error) {
-        alertPresenter.showAlert(title: "Что-то пошло не так(",
+        AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(",
                                  message: "Не удалось войти в систему, \(error.localizedDescription)") {
         }
     }

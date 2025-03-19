@@ -26,6 +26,7 @@ final class ProfileService {
         task?.cancel()
         
         guard let request = makeProfileServiceRequest(token: token) else {
+            print("[ProfileImageService.fetchProfileImageURL]: NetworkError - invalid request")
             completion(.failure(profileServiceError.invalidRequest))
             return
         }
@@ -36,7 +37,10 @@ final class ProfileService {
                 
                 switch result {
                 case .success(let responseData):
-                    self.profile = Profile(username: responseData.username, firstName: responseData.firstName, lastName: responseData.lastName ?? "", bio: responseData.bio ?? "")
+                    self.profile = Profile(username: responseData.username,
+                                           firstName: responseData.firstName,
+                                           lastName: responseData.lastName ?? "",
+                                           bio: responseData.bio ?? "")
                     
                     guard let profile = self.profile else {
                         completion(.failure(profileServiceError.emptyResponse))

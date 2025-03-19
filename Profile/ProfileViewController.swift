@@ -11,7 +11,7 @@ import Kingfisher
 final class ProfileViewController: UIViewController {
 
     private enum UIConstants {
-        static let nameLabelFontSize: CGFloat = 16
+        static let nameLabelFontSize: CGFloat = 23
         static let loginNameLabelFontSize: CGFloat = 13
         static let descriptionLabelFontSize: CGFloat = 13
         static let imageSize: CGFloat = 70
@@ -19,7 +19,7 @@ final class ProfileViewController: UIViewController {
 
     private var profileImageServiceObserver: NSObjectProtocol?
     
-    private var avatarImageView: UIImageView = {
+    private lazy var avatarImageView: UIImageView = {
         let avatarImage = UIImage(named: "profile_pic")
         let view = UIImageView(image: avatarImage)
         view.layer.cornerRadius = UIConstants.imageSize/2
@@ -27,24 +27,27 @@ final class ProfileViewController: UIViewController {
         return view
     }()
     
-    private var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
         label.font = .systemFont(ofSize: UIConstants.nameLabelFontSize, weight: .bold)
+        guard  let textColor = UIColor(named: "YP White") else {return UILabel()}
+        label.textColor = textColor
         return label
     }()
     
     private let loginNameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .gray
         label.font = .systemFont(ofSize: UIConstants.loginNameLabelFontSize, weight: .regular)
+        guard let textColor = UIColor(named: "YP Grey") else {return UILabel()}
+        label.textColor = textColor
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
         label.font = .systemFont(ofSize: UIConstants.descriptionLabelFontSize, weight: .regular)
+        guard let textColor = UIColor(named: "YP White") else {return UILabel()}
+        label.textColor = textColor
         return label
     }()
     
