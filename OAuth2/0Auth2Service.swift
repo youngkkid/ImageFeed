@@ -1,5 +1,5 @@
 //
-//  OAuth2Service.swift
+//  OAuth2Service .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 18.02.2025.
@@ -15,15 +15,61 @@ struct OAuthTokenResponseBody: Decodable {
     }
 }
 
+private enum AuthServiceError: Error {
+    case invalidRequest
+}
+
 final class OAuth2Service {
+    
+    private let urlSession = URLSession.shared
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    private let tokenStorage = OAuth2TokenStorage()
     
     static let shared = OAuth2Service()
     
-    let tokenStorage = OAuth2TokenStorage()
-    
     private init() {}
     
-     func makeOAuthTokenRequest(code: String) -> URLRequest? {
+    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        
+        guard  lastCode != code else {
+            print("[OAuth2Service.fetchOAuthToken]: NetworkError - invalid Request")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = makeOAuthTokenRequest(code: code) else {
+            print("[OAuth2Service.fetchOAuthToken]: NetworkError - invalid Request")
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        
+        let task = urlSession.objectTask(for: request) {[weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                guard let self = self else {return}
+                switch result {
+                case .success(let responseData):
+                    let accessToken = responseData.accessToken
+                    self.tokenStorage.storeToken(accessToken)
+                    completion(.success(accessToken))
+                    
+                case .failure(let error):
+                    print("[OAuth2Service.fetchOAuthToken]: NetworkError - \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+                self.task = nil
+                self.lastCode = nil
+            }
+        }
+        self.task = task
+        task.resume()
+    }
+    
+    private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         let baseUrl = "https://unsplash.com"
         let path = "/oauth/token"
         
@@ -43,7 +89,7 @@ final class OAuth2Service {
         ]
         
         guard let url = urlComponents.url else {
-            print("Failed to construct url")
+            assertionFailure("Failed to create URL")
             return nil
         }
         
@@ -53,52 +99,10 @@ final class OAuth2Service {
         return request
     }
     
-    func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let request = makeOAuthTokenRequest(code: code) else { return }
-        
-        let task = URLSession.shared.data(for: request) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let data):
-                do {
-                    let responseData = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                    let accessToken = responseData.accessToken
-                    self.tokenStorage.storeToken(accessToken)
-                    DispatchQueue.main.async {
-                        completion(.success(accessToken))
-                    }
-                } catch {
-                    print("Failed to decode data. \nError occurred: \(error.localizedDescription)")
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
-            case .failure(let error):
-                if let networkError = error as? NetworkError {
-                    switch networkError {
-                    case .httpStatusCode(let statusCode):
-                        print("Received HTTP error with status code: \(statusCode)")
-                    case .urlRequestError(let requestError):
-                        print("URL Request error occurred: \(requestError.localizedDescription)")
-                    case .urlSessionError:
-                        print("An unknown URLSession error occurred.")
-                    }
-                } else {
-                    print("An unknown error occurred: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async{
-                    completion(.failure(error))
-                }
-            }
-        }
-        
-        task.resume()
-    }
-    
-    
-    
     func isAccessTokenAvailable() -> Bool {
         return tokenStorage.token != nil
     }
 }
+
+
 

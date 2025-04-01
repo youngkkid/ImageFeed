@@ -1,5 +1,5 @@
 //
-//  SingleImageViewController.swift
+//  SingleImageViewController .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 07.02.2025.

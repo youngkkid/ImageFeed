@@ -1,5 +1,5 @@
 //
-//  ImagesListCell.swift
+//  ImagesListCell .swift
 //  ImageFeed
 //
 //  Created by Илья Ануфриев on 31.01.2025.

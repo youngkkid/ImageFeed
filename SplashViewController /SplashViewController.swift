@@ -1,62 +1,111 @@
 //
-//  SplashViewController.swift
+//  SplashViewController .swift
 //  ImageFeed
 //
-//  Created by Илья Ануфриев on 19.02.2025.
+//  Created by Илья Ануфриев on 22.02.2025.
 //
 
 import UIKit
 
-
 final class SplashViewController: UIViewController {
-    private let showAuthenticationScreenSegueIdentifier = "ShowAuthViewSegueIdentifier"
 
-    private let oauth2Service = OAuth2Service.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let showAuthenticationScreenSegueIdentifier = "showAuthentificationScreen"
+    private let tokenStorage = OAuth2TokenStorage()
+    private let splashImageLogo: UIImageView = {
+        let splashImage = UIImage(named: "auth_logo")
+        let view = UIImageView(image: splashImage)
+        return view
+    }()
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if let token = oauth2TokenStorage.token {
+        if let token = tokenStorage.token {
+            fetchProfile(token)
             switchToTabBarController()
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            if let authViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController {
+                authViewController.delegate = self
+                authViewController.modalPresentationStyle = .fullScreen
+                present(authViewController, animated: true, completion: nil)
+            }
+            
         }
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setNeedsStatusBarAppearanceUpdate()
+    
+    override func viewDidLoad() {
+        initialize()
     }
-
+    
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
+            return
+        }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarController")
+            .instantiateViewController(identifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
 }
 
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == showAuthenticationScreenSegueIdentifier,
-              let navigationController = segue.destination as? UINavigationController,
-              let viewController = navigationController.viewControllers.first as? AuthViewController else {
-            super.prepare(for: segue, sender: sender)
-            return
-        }
-        viewController.delegate = self
-    }
-}
 extension SplashViewController: AuthViewControllerDelegate {
-    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true) { [weak self] in
+    func didAuthenticate(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+        navigationController?.popViewController(animated: true)
+        fetchOAuthToken(code)
+    }
+    
+    private func fetchOAuthToken(_ code: String) {
+        
+        UIBlockingProgressHUD.show()
+        OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] authResult in
+            UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
-            self.switchToTabBarController()
+            switch authResult {
+            case .success:
+                guard let token = tokenStorage.token else { return }
+                self.fetchProfile(token)
+                self.switchToTabBarController()
+                return
+            case .failure(let error):
+                self.showLoginAlert(error: error)
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    private func fetchProfile(_ token: String) {
+        UIBlockingProgressHUD.show()
+        
+        ProfileService.shared.fetchProfile(token) { [weak self] profileResult in
+            UIBlockingProgressHUD.dismiss()
+            
+            switch profileResult {
+            case .success:
+                guard let username = ProfileService.shared.profile?.username else { return }
+                ProfileImageService.shared.fetchProfileImageURL(username: username) { _ in }
+                self?.switchToTabBarController()
+            case .failure(let error):
+                self?.showLoginAlert(error: error)
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    private func initialize() {
+        self.view.backgroundColor = UIColor(named: "YP Black")
+        
+        splashImageLogo.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(splashImageLogo)
+        
+        NSLayoutConstraint.activate([
+            splashImageLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashImageLogo.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
+    private func showLoginAlert(error: Error) {
+        AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(",
+                                 message: "Не удалось войти в систему, \(error.localizedDescription)") {
         }
     }
 }
