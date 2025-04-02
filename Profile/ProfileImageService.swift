@@ -62,12 +62,16 @@ final class ProfileImageService {
         task.resume()
     }
     
+    func cleanAvatar() {
+        avatarURL = nil
+    }
+    
     private func makeProfileImageRequest(token: String, username: String) -> URLRequest?{
         var urlComponents = URLComponents()
         urlComponents.path = Constants.userRequest + username
         
         guard let url = urlComponents.url(relativeTo: Constants.apiURL) else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("[ProfileImageService.makeProfileImageRequest]: NetworkError - Failed to create URL")
             return nil
         }
         

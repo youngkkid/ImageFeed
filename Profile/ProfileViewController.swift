@@ -18,6 +18,7 @@ final class ProfileViewController: UIViewController {
     }
 
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let profileLogoutService = ProfileLogoutService.shared
     
     private lazy var avatarImageView: UIImageView = {
         let avatarImage = UIImage(named: "profile_pic")
@@ -117,7 +118,7 @@ final class ProfileViewController: UIViewController {
             let imageURL = URL(string: profileImageURL)
         else { return }
         avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: imageURL, placeholder: UIImage(named: "profile_pic")) { result in
+        avatarImageView.kf.setImage(with: imageURL, placeholder: UIImage(named: "placeholder_avatar")) { result in
             switch result {
             case .success(let value):
                 print(value.image)
@@ -130,9 +131,14 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapLogOutButton() {
-        print("TappedLogOutButton")
+        AlertPresenter.showAlertTwoButtons(viewController: self, title: "Пока, пока!", message: "Уверены, что хотите выйти?", firstButtonTitle: "Да", secondButtonTitle: "Нет") {[weak self] in
+            guard let self = self else {return}
+            self.profileLogoutService.logout()
+            guard let window = UIApplication.shared.windows.first else {return}
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
+        }
     }
-    
 }
 
 

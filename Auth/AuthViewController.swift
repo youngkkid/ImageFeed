@@ -15,12 +15,12 @@ final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
     
-    private let ShowWebViewSegueIdentifier = "ShowWebViewSegueIdentifier"
+    private let showWebViewSegueIdentifier = "ShowWebViewSegueIdentifier"
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
+        if segue.identifier == showWebViewSegueIdentifier {
             guard let webViewViewController = segue.destination as? WebViewViewController else {
-                assertionFailure("Failed for prepare \(ShowWebViewSegueIdentifier)")
+                assertionFailure("[AuthViewController.prepare]: Failed for prepare \(showWebViewSegueIdentifier)")
                 return
             }
             webViewViewController.delegate = self
@@ -33,10 +33,9 @@ final class AuthViewController: UIViewController {
     }
     
     @IBAction func didTapAuthButton(_ sender: UIButton) {
-        performSegue(withIdentifier: ShowWebViewSegueIdentifier, sender: self)
+        performSegue(withIdentifier: showWebViewSegueIdentifier, sender: self)
     }
 }
-
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {

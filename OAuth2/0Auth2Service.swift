@@ -7,26 +7,17 @@
 
 import UIKit
 
-struct OAuthTokenResponseBody: Decodable {
-    let accessToken: String
-    
-    private enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-    }
-}
-
 private enum AuthServiceError: Error {
     case invalidRequest
 }
 
 final class OAuth2Service {
+    static let shared = OAuth2Service()
     
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
     private let tokenStorage = OAuth2TokenStorage()
-    
-    static let shared = OAuth2Service()
     
     private init() {}
     
@@ -69,35 +60,27 @@ final class OAuth2Service {
         task.resume()
     }
     
+    
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
-        let baseUrl = "https://unsplash.com"
-        let path = "/oauth/token"
-        
-        guard var urlComponents = URLComponents(string: baseUrl) else {
-            print("Invalid base url")
-            return nil
+        guard let baseURL = URL(string: "https://unsplash.com") else{
+            preconditionFailure("[OAuth2Service.makeOAuthTokenRequest]: NetworkError - unable to get URL")
         }
         
-        urlComponents.path = path
-        
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "client_secret", value: Constants.secretKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "code", value: code),
-            URLQueryItem(name: "grant_type", value: "authorization_code"),
-        ]
-        
-        guard let url = urlComponents.url else {
-            assertionFailure("Failed to create URL")
-            return nil
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        return request
-    }
+         guard let url = URL(
+             string: "/oauth/token"
+             + "?client_id=\(Constants.accessKey)"
+             + "&&client_secret=\(Constants.secretKey)"
+             + "&&redirect_uri=\(Constants.redirectURI)"
+             + "&&code=\(code)"
+             + "&&grant_type=authorization_code",
+             relativeTo: baseURL
+         ) else{
+             preconditionFailure("[OAuth2Service.makeOAuthTokenRequest]: NetworkError - unable to get URL")
+         }
+         var request = URLRequest(url: url)
+         request.httpMethod = "POST"
+         return request
+     }
     
     func isAccessTokenAvailable() -> Bool {
         return tokenStorage.token != nil

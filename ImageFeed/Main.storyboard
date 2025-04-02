@@ -162,6 +162,7 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="rxh-au-bhT" userLabel="Cell Image">
                                                     <rect key="frame" x="16" y="4" width="361" height="214"/>
+                                                    <color key="backgroundColor" name="YP Background"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -183,6 +184,9 @@
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Active"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked:" destination="mW0-T4-HRF" eventType="touchUpInside" id="Afe-QP-QSK"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" name="YP Background"/>
@@ -300,7 +304,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="YWC-S8-nBv"/>
                     <connections>
-                        <outlet property="imageView" destination="SaO-4C-X5N" id="3Ls-PO-DPs"/>
+                        <outlet property="imageView" destination="SaO-4C-X5N" id="eZw-cv-m1c"/>
                         <outlet property="scrollView" destination="ln4-xp-yXN" id="IqG-nK-2D7"/>
                     </connections>
                 </viewController>

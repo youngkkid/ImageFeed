@@ -18,11 +18,19 @@ final class ProfileService {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private(set) var profile: Profile?
+    private var lastToken: String?
     
     private init() {}
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
+        
+        if token == lastToken {
+            print("[ProfileService.fetchProfile]: Repeated token request")
+            completion(.failure(profileServiceError.invalidRequest))
+            return
+        }
+        
         task?.cancel()
         
         guard let request = makeProfileServiceRequest(token: token) else {
@@ -66,7 +74,7 @@ final class ProfileService {
         urlComponents.path = Constants.profileRequestPath
         
         guard let url = urlComponents.url(relativeTo: Constants.apiURL) else {
-            assertionFailure("Failed to create URL")
+            assertionFailure("[ProfileService.makeProfileServiceRequest]: NetworkError - Failed to create URL")
             return nil
         }
 

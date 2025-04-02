@@ -6,17 +6,18 @@
 //
 
 import UIKit
+import Kingfisher
 
  final class SingleImageViewController: UIViewController {
 
      var image: UIImage? {
-         didSet {
+         didSet{
              guard isViewLoaded, let image else {return}
-             imageView.image = image
-             imageView.frame.size = image.size
-             rescaleAndCenterImageInScrollView(image: image)
-         }
+             setImage(image: image)
+            }
      }
+     
+     var photoUrl: String?
      
      @IBOutlet private var imageView: UIImageView!
      @IBOutlet private var scrollView: UIScrollView!
@@ -25,11 +26,9 @@ import UIKit
          super.viewDidLoad()
          scrollView.minimumZoomScale = 0.1
          scrollView.maximumZoomScale = 1.25
-         
-         guard let image else {return}
-         imageView.image = image
-         imageView.frame.size = image.size
-         rescaleAndCenterImageInScrollView(image: image)
+         guard let stringUrl = photoUrl, 
+               let url = URL(string: stringUrl) else {return}
+         loadAndSetImage(fullImageUrl: url)
      }
      
      private func rescaleAndCenterImageInScrollView(image: UIImage) {
@@ -47,6 +46,34 @@ import UIKit
          let x = (newContentSize.width - visibleRectSize.width) / 2
          let y = (newContentSize.height - visibleRectSize.height) / 2
          scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+     }
+     
+     private func setImage(image: UIImage) {
+         imageView.image = image
+         imageView.frame.size = image.size
+         rescaleAndCenterImageInScrollView(image: image)
+     }
+     
+     private func loadAndSetImage(fullImageUrl: URL) {
+         UIBlockingProgressHUD.show()
+         imageView.kf.setImage(with: fullImageUrl) {[weak self] result in
+             UIBlockingProgressHUD.dismiss()
+             guard let self = self else {return}
+             switch result {
+             case .success(let value):
+                 self.image = value.image
+             case .failure:
+                 showError()
+             }
+         }
+     }
+     
+     private func showError(){
+         AlertPresenter.showAlertTwoButtons(viewController: self, title: "Что-то пошло не так(", message: "Попробовать ещё раз?", firstButtonTitle: "Повторить", secondButtonTitle: "Не надо") {[weak self] in
+             guard let self = self else {return}
+             guard let stringUrl = photoUrl, let url = URL(string: stringUrl) else {return}
+             self.loadAndSetImage(fullImageUrl: url)
+         }
      }
      
      @IBAction private func didTapBackButton(_ sender: UIButton) {
