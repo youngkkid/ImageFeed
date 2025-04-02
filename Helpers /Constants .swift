@@ -19,4 +19,5 @@ enum Constants {
     static let apiURL = URL(string: "https://api.unsplash.com/")
     static let bearerToken: String = "bearerToken"
     static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+    static let  unsplashPhtotsPageURLString =  "https://api.unsplash.com/photos?page="
 }

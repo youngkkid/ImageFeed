@@ -27,5 +27,5 @@ struct PhotoResult: Codable {
 
 struct Urls: Codable {
     let full: String
-    let thumb: String
+    let regular: String
 }

@@ -17,8 +17,8 @@ final class ImagesListViewController: UIViewController {
     private let newDateFormatter = ISO8601DateFormatter()
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "d MMMM yyyy"
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
         
         return formatter
     }()
@@ -54,7 +54,7 @@ final class ImagesListViewController: UIViewController {
         ImagesListService.shared.fetchPhotosNextPage() {_ in}
     }
     
-   @objc func updateTableViewAnimated() {
+   @objc private func updateTableViewAnimated() {
        let oldCount = photos.count
        let newPhotos = imagesListService.photos
        guard newPhotos.count > oldCount else {return}
@@ -110,7 +110,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let url = URL(string: photos[indexPath.row].thumbImageURL) else {return}
+        guard let url = URL(string: photos[indexPath.row].regularImageURL) else {return}
         cell.cellImage.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
         cell.cellImage.kf.indicatorType = .activity
         cell.cellImage.layer.cornerRadius = 15
@@ -148,10 +148,9 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 case .success:
                     self.photos = self.imagesListService.photos
                     cell.setIsLiked(self.photos[indexPath.row].isLiked)
-                    UIBlockingProgressHUD.dismiss()
                 case .failure:
-                    UIBlockingProgressHUD.dismiss()
                     AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(", message:"Не удалось выполнить действие" , handler: {})
+        UIBlockingProgressHUD.dismiss()
                 }
             }
         }

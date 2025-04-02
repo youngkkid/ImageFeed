@@ -189,7 +189,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" name="YP Background"/>
+                                            <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
                                                 <constraint firstItem="rxh-au-bhT" firstAttribute="leading" secondItem="WUU-56-kRS" secondAttribute="leading" constant="16" id="4VO-6B-1z6"/>
                                                 <constraint firstItem="lZ3-hS-HeD" firstAttribute="top" secondItem="rxh-au-bhT" secondAttribute="top" id="5XW-3h-5Np"/>
@@ -202,7 +202,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="rxh-au-bhT" secondAttribute="bottom" constant="4" id="vgy-s8-yW2"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" name="YP Background"/>
+                                        <color key="backgroundColor" name="YP Black"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layerCornerRadius">
                                                 <integer key="value" value="16"/>

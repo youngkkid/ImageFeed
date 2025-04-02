@@ -27,7 +27,7 @@ final class ImagesListService {
             switch result {
             case .success(let photoResult):
                 photoResult.forEach{ photo in
-                    let newPhoto = Photo(id: photo.id, size: CGSize(width: photo.width, height: photo.height), createdAt: photo.createdAt, welcomeDescription: photo.description, thumbImageURL: photo.urls.thumb, largeImageURL: photo.urls.full, isLiked: photo.likedByUser)
+                    let newPhoto = Photo(id: photo.id, size: CGSize(width: photo.width, height: photo.height), createdAt: photo.createdAt, welcomeDescription: photo.description, regularImageURL: photo.urls.regular, largeImageURL: photo.urls.full, isLiked: photo.likedByUser)
                     self.photos.append(newPhoto)
                 }
                 let nextPage = (lastLoadedPage ?? 0) + 1
@@ -62,7 +62,7 @@ final class ImagesListService {
                     let like = like.photo.likedByUser
                     if let index = self.photos.firstIndex(where: {$0.id == photoId}) {
                         let photo = self.photos[index]
-                        let newPhoto = Photo(id: photo.id, size: photo.size, createdAt: photo.createdAt, welcomeDescription: photo.welcomeDescription, thumbImageURL: photo.thumbImageURL, largeImageURL: photo.largeImageURL, isLiked: like)
+                        let newPhoto = Photo(id: photo.id, size: photo.size, createdAt: photo.createdAt, welcomeDescription: photo.welcomeDescription, regularImageURL: photo.regularImageURL, largeImageURL: photo.largeImageURL, isLiked: like)
                         self.photos[index] = newPhoto
                     }
                     completion(.success(()))
@@ -86,7 +86,7 @@ final class ImagesListService {
     private func makePhotosRequest() -> URLRequest{
         let nextPage = (lastLoadedPage ?? 0) + 1
         self.lastLoadedPage = nextPage
-        guard let baseURL = URL(string: "https://api.unsplash.com/photos?page=\(nextPage)") else {
+        guard let baseURL = URL(string: Constants.unsplashPhtotsPageURLString + "\(nextPage)") else {
             print("[ImagesListService.makePhotosRequest]: NetworkError - Error of getting token")
             preconditionFailure("[ImagesListService.makePhotosRequest]: NetworkError - Unable to construct baseURL")
         }

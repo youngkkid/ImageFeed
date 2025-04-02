@@ -11,9 +11,9 @@ import Kingfisher
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     
-    @IBOutlet  weak var dateLabel: UILabel!
-    @IBOutlet  weak var cellImage: UIImageView!
-    @IBOutlet  weak var likeButton: UIButton!
+    @IBOutlet   weak var dateLabel: UILabel!
+    @IBOutlet   weak var cellImage: UIImageView!
+    @IBOutlet   weak var likeButton: UIButton!
     
     weak var delegate: ImagesListCellDelegate?
     
@@ -21,15 +21,6 @@ final class ImagesListCell: UITableViewCell {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
         cellImage.image = UIImage(named: "placeholder")
-    }
-    
-    func setImage(with url: URL) {
-        cellImage.kf.indicatorType = .activity
-        cellImage.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"), options: [.transition(.fade(0.3))])
-    }
-     
-    func setDate(_ formattedDate: String) {
-        dateLabel.text = formattedDate
     }
     
     func setIsLiked(_ isLiked: Bool) {
