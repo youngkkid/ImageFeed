@@ -142,6 +142,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
         imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) {[weak self] result in
+            UIBlockingProgressHUD.dismiss()
             DispatchQueue.main.async {
                 guard let self = self else {return}
                 switch result {
@@ -150,7 +151,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
                     cell.setIsLiked(self.photos[indexPath.row].isLiked)
                 case .failure:
                     AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(", message:"Не удалось выполнить действие" , handler: {})
-        UIBlockingProgressHUD.dismiss()
                 }
             }
         }
