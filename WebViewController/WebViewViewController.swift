@@ -8,10 +8,6 @@
 import UIKit
 import WebKit
 
-enum WebViewConstants {
-   static let unsplashAuthorizeURLString = Constants.unsplashAuthorizeURLString
- }
-
 final class WebViewViewController: UIViewController & WebViewControllerProtocol {
     
     var presenter: WebViewPresenterProtocol?
