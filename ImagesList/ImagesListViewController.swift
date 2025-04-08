@@ -8,7 +8,13 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+protocol ImageListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListPresenterProtocol? {get set}
+    func showAlert()
+}
+
+final class ImagesListViewController: UIViewController & ImageListViewControllerProtocol {    
+    weak var presenter: ImagesListPresenterProtocol?
     private var photos = [Photo]()
     private var imageListServiceObserver: NSObjectProtocol?
     private let photoName: [String] = Array(0...20).map{"\($0)"}
@@ -24,6 +30,10 @@ final class ImagesListViewController: UIViewController {
     }()
     
     @IBOutlet private var tableView: UITableView!
+    
+    func showAlert() {
+        AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(", message: "Не удалось выполнить действие", handler: {})
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageIdentifier {
