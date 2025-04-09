@@ -22,6 +22,10 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     weak var view: ImageListViewControllerProtocol?
     private let imagesListService = ImagesListService.shared
     
+    init( view: ImageListViewControllerProtocol) {
+        self.view = view
+    }
+    
     func countPhotos() -> Int {
         return photos.count
     }

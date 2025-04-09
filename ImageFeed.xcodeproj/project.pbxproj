@@ -49,6 +49,7 @@
 		84C9B48E2D89E19000921489 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C9B48D2D89E19000921489 /* Profile.swift */; };
 		84E74B6E2D7C302500EE9811 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E74B6D2D7C302500EE9811 /* UIBlockingProgressHUD.swift */; };
 		84E74B712D7C406000EE9811 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E74B702D7C406000EE9811 /* ProfileService.swift */; };
+		84EC04852DA66AD800228975 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC04842DA66AD800228975 /* ImagesListPresenter.swift */; };
 		84F0F6732D4D1985007DB58A /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F0F6722D4D1985007DB58A /* ImagesListCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +106,7 @@
 		84C9B48D2D89E19000921489 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		84E74B6D2D7C302500EE9811 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		84E74B702D7C406000EE9811 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		84EC04842DA66AD800228975 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
 		84F0F6722D4D1985007DB58A /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -310,6 +312,7 @@
 				848B4D312D8C1ED500CF4057 /* ImagesListService.swift */,
 				84F0F6722D4D1985007DB58A /* ImagesListCell.swift */,
 				8400C19C2D4B922D005DCE45 /* ImagesListViewController.swift */,
+				84EC04842DA66AD800228975 /* ImagesListPresenter.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				847E21B42DA042A1000AB9BE /* WebViewPresenterProtocol.swift in Sources */,
 				84A0FB4F2D9465D400ECD542 /* ProfileLogoutService.swift in Sources */,
 				843B386A2D888C1000E1F393 /* ProfileResult.swift in Sources */,
+				84EC04852DA66AD800228975 /* ImagesListPresenter.swift in Sources */,
 				84E74B712D7C406000EE9811 /* ProfileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
