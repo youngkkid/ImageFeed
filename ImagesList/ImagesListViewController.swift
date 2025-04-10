@@ -51,19 +51,16 @@ final class ImagesListViewController: UIViewController & ImageListViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = ImagesListPresenter(view: self)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateTableViewAnimated),
-                                               name: ImagesListService.didChangeNotification,
-                                               object: nil)
-        ImagesListService.shared.fetchPhotosNextPage() {_ in}
-        
         presenter?.viewDidLoad()
+        ImagesListService.shared.fetchPhotosNextPage() {_ in}
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableView.automaticDimension
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateTableViewAnimated),
+                                               name: ImagesListService.didChangeNotification,
+                                               object: nil)
     }
     
    @objc private func updateTableViewAnimated() {

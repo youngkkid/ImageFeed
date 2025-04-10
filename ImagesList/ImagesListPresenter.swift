@@ -20,10 +20,10 @@ protocol ImagesListPresenterProtocol: AnyObject {
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     var photos = [Photo]()
     weak var view: ImageListViewControllerProtocol?
-    private let imagesListService = ImagesListService.shared
+    private var imagesListService = ImagesListService()
     
-    init( view: ImageListViewControllerProtocol) {
-        self.view = view
+    init(imagesListService: ImagesListService = ImagesListService.shared) {
+        self.imagesListService = imagesListService
     }
     
     func countPhotos() -> Int {
