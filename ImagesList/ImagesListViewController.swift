@@ -26,7 +26,7 @@ final class ImagesListViewController: UIViewController & ImageListViewController
         return formatter
     }()
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView?
     
     func showAlert() {
         AlertPresenter.showAlert(viewController: self, title: "Что-то пошло не так(", message: "Не удалось выполнить действие", handler: {})
@@ -52,11 +52,11 @@ final class ImagesListViewController: UIViewController & ImageListViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-        ImagesListService.shared.fetchPhotosNextPage() {_ in}
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+//        ImagesListService.shared.fetchPhotosNextPage() {_ in}
+        tableView?.dataSource = self
+        tableView?.delegate = self
+        tableView?.rowHeight = UITableView.automaticDimension
+        tableView?.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateTableViewAnimated),
                                                name: ImagesListService.didChangeNotification,
@@ -73,8 +73,8 @@ final class ImagesListViewController: UIViewController & ImageListViewController
        guard newCount > oldCount else {return}
        let indexPaths = (oldCount..<newCount).map { IndexPath(row: $0, section: 0)}
        
-       tableView.performBatchUpdates {
-           tableView.insertRows(at: indexPaths, with: .automatic)
+       tableView?.performBatchUpdates {
+           tableView?.insertRows(at: indexPaths, with: .automatic)
        }
     }
 }
@@ -149,7 +149,7 @@ extension ImagesListViewController {
 
 extension ImagesListViewController: ImagesListCellDelegate {
     func imagesListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        guard let indexPath = tableView?.indexPath(for: cell) else {return}
         presenter?.imagesListCellDidTapLike(cell, indexPath: indexPath)
     }
 }

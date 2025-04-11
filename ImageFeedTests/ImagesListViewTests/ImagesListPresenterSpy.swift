@@ -23,12 +23,12 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
         return photos.count
     }
     
-    func photo(at indexPath: IndexPath) -> Photo {
+    func photo(at indexPath: IndexPath) -> ImageFeed.Photo? {
         returnPhotosIndexPathIsCalled = true
-        guard indexPath.row < photos.count else {
-            preconditionFailure()
+        if photos.count > indexPath.row {
+            return photos[indexPath.row]
         }
-        return photos[indexPath.row]
+        return nil
     }
     
     func viewDidLoad() {

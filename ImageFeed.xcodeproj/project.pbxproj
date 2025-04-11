@@ -54,8 +54,8 @@
 		84EC048B2DA6E08C00228975 /* ProfileViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC048A2DA6E08C00228975 /* ProfileViewTests.swift */; };
 		84EC048D2DA6E11900228975 /* ProfileViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC048C2DA6E11900228975 /* ProfileViewControllerSpy.swift */; };
 		84EC048F2DA6E12B00228975 /* ProfilePresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC048E2DA6E12B00228975 /* ProfilePresenterSpy.swift */; };
-		84EC04922DA7E0F700228975 /* ImagesListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC04912DA7E0F700228975 /* ImagesListViewTests.swift */; };
 		84EC04962DA7E12500228975 /* ImagesListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC04952DA7E12500228975 /* ImagesListPresenterSpy.swift */; };
+		84EC049A2DA8EA4200228975 /* ImagesListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EC04992DA8EA4200228975 /* ImagesListViewTests.swift */; };
 		84F0F6732D4D1985007DB58A /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F0F6722D4D1985007DB58A /* ImagesListCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -117,8 +117,8 @@
 		84EC048A2DA6E08C00228975 /* ProfileViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewTests.swift; sourceTree = "<group>"; };
 		84EC048C2DA6E11900228975 /* ProfileViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerSpy.swift; sourceTree = "<group>"; };
 		84EC048E2DA6E12B00228975 /* ProfilePresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenterSpy.swift; sourceTree = "<group>"; };
-		84EC04912DA7E0F700228975 /* ImagesListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewTests.swift; sourceTree = "<group>"; };
 		84EC04952DA7E12500228975 /* ImagesListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenterSpy.swift; sourceTree = "<group>"; };
+		84EC04992DA8EA4200228975 /* ImagesListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewTests.swift; sourceTree = "<group>"; };
 		84F0F6722D4D1985007DB58A /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -341,7 +341,7 @@
 			isa = PBXGroup;
 			children = (
 				84EC04952DA7E12500228975 /* ImagesListPresenterSpy.swift */,
-				84EC04912DA7E0F700228975 /* ImagesListViewTests.swift */,
+				84EC04992DA8EA4200228975 /* ImagesListViewTests.swift */,
 			);
 			path = ImagesListViewTests;
 			sourceTree = "<group>";
@@ -515,9 +515,9 @@
 			files = (
 				84EC048B2DA6E08C00228975 /* ProfileViewTests.swift in Sources */,
 				844A0CB32DA1517A00498F7D /* WebViewTests.swift in Sources */,
-				84EC04922DA7E0F700228975 /* ImagesListViewTests.swift in Sources */,
 				844A0CBC2DA158B300498F7D /* WebViewControllerSpy.swift in Sources */,
 				84EC04962DA7E12500228975 /* ImagesListPresenterSpy.swift in Sources */,
+				84EC049A2DA8EA4200228975 /* ImagesListViewTests.swift in Sources */,
 				844A0CBA2DA1580F00498F7D /* WebViewPresenterSpy.swift in Sources */,
 				84EC048D2DA6E11900228975 /* ProfileViewControllerSpy.swift in Sources */,
 				84EC048F2DA6E12B00228975 /* ProfilePresenterSpy.swift in Sources */,
