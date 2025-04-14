@@ -7,13 +7,6 @@
 
 import UIKit
 
-protocol ProfilePresenterProtocol: AnyObject {
-    var view: ProfileViewControllerProtocol? {get set}
-    func viewDidLoad()
-    func updateAvatar()
-    func reset()
-}
-
 final class ProfilePresenter: ProfilePresenterProtocol {
     weak var view: ProfileViewControllerProtocol?
     
@@ -53,5 +46,3 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     
     
 }
-
-

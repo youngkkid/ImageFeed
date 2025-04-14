@@ -13,7 +13,6 @@ private enum profileServiceError: Error {
  }
 
 final class ProfileService {
-    
     static let shared = ProfileService()
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?

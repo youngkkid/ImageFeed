@@ -18,7 +18,6 @@ final class ProfilePresenterSpy: ProfilePresenterProtocol {
         updateAvatarIsCalled = true
     }
 
-    
     func viewDidLoad() {
         viewDidLoadIsCalled = true
     }

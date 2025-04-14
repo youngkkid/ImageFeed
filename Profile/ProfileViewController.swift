@@ -8,12 +8,6 @@
 import UIKit
 import Kingfisher
 
-protocol ProfileViewControllerProtocol: AnyObject {
-    var presenter: ProfilePresenterProtocol? {get set}
-    func updateAvatar(url: URL)
-    func setUserInfo(profile: Profile?)
-}
-
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     var presenter: ProfilePresenterProtocol?
@@ -80,6 +74,9 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             }
         presenter?.updateAvatar()
         initialize()
+        logOutButton.accessibilityIdentifier = AccessibilityIdentifiers.logoutButton
+        nameLabel.accessibilityIdentifier = AccessibilityIdentifiers.nameLabel
+        loginNameLabel.accessibilityIdentifier = AccessibilityIdentifiers.loginNameLabel
     }
 
     private func initialize() {
@@ -131,10 +128,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         AlertPresenter.showAlertTwoButtons(viewController: self, title: "Пока, пока!", message: "Уверены, что хотите выйти?", firstButtonTitle: "Да", secondButtonTitle: "Нет") {[weak self] in
             guard let self = self else {return}
             self.presenter?.reset()
-//            self.profileLogoutService.logout()
-//            guard let window = UIApplication.shared.windows.first else {return}
-//            window.rootViewController = SplashViewController()
-//            window.makeKeyAndVisible()
         }
     }
     

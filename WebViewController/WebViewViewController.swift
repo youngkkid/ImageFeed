@@ -23,6 +23,7 @@ final class WebViewViewController: UIViewController & WebViewControllerProtocol 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        webView.accessibilityIdentifier = AccessibilityIdentifiers.webView
         
         webView.navigationDelegate = self
         presenter?.viewDidLoad()
@@ -41,10 +42,9 @@ final class WebViewViewController: UIViewController & WebViewControllerProtocol 
         progressView.isHidden = isHidden
     }
     
-    @IBAction private func didTapBackButton(_ sender: UIButton) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         delegate?.webViewViewControllerDidCancel(self)
     }
-    
 }
 
 extension WebViewViewController: WKNavigationDelegate {

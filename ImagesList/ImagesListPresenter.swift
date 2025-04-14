@@ -7,16 +7,6 @@
 
 import UIKit
 
-protocol ImagesListPresenterProtocol: AnyObject {
-    var view: ImageListViewControllerProtocol? {get set}
-    func countPhotos() -> Int
-    func photo(at indexPath: IndexPath) -> Photo?
-    func viewDidLoad()
-    func imagesListCellDidTapLike(_ cell: ImagesListCell, indexPath: IndexPath)
-    func loadNewPhotosIfNeed(indexPath: IndexPath)
-    func updateInfoForTableView() -> Array<Int>
-}
-
 final class ImagesListPresenter: ImagesListPresenterProtocol {
     var photos = [Photo]()
     weak var view: ImageListViewControllerProtocol?

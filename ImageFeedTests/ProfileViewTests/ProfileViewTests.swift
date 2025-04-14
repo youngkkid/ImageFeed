@@ -44,7 +44,7 @@ final class ProfileViewTests: XCTestCase {
         XCTAssertTrue(presenter.updateAvatarIsCalled)
     }
     
-    func testViewControllerCallsUpdateAvatar2() {
+    func testViewControllerCallsUpdateAvatarWithURL() {
         let viewController = ProfileViewControllerSpy()
         let presenter = ProfilePresenter()
         viewController.presenter = presenter

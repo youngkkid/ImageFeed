@@ -8,11 +8,6 @@
 import UIKit
 import Kingfisher
 
-protocol ImageListViewControllerProtocol: AnyObject {
-    var presenter: ImagesListPresenterProtocol? {get set}
-    func showAlert()
-}
-
 final class ImagesListViewController: UIViewController & ImageListViewControllerProtocol {    
     var presenter: ImagesListPresenterProtocol?
     private var imageListServiceObserver: NSObjectProtocol?
@@ -52,7 +47,6 @@ final class ImagesListViewController: UIViewController & ImageListViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
-//        ImagesListService.shared.fetchPhotosNextPage() {_ in}
         tableView?.dataSource = self
         tableView?.delegate = self
         tableView?.rowHeight = UITableView.automaticDimension
@@ -61,6 +55,7 @@ final class ImagesListViewController: UIViewController & ImageListViewController
                                                selector: #selector(updateTableViewAnimated),
                                                name: ImagesListService.didChangeNotification,
                                                object: nil)
+        
     }
     
    @objc private func updateTableViewAnimated() {
