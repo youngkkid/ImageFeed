@@ -43,6 +43,4 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         window.rootViewController = vc
         window.makeKeyAndVisible()
     }
-    
-    
 }

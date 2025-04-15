@@ -10,7 +10,7 @@ import Foundation
 final class WebViewPresenter: WebViewPresenterProtocol {
     
     weak var view:  WebViewControllerProtocol?
-    var authHelper: AuthHelperProtocol
+    private var authHelper: AuthHelperProtocol
     
     init (authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper
