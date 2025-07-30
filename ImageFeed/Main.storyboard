@@ -27,6 +27,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L9n-WC-GFh">
                                 <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Authenticate"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="U9w-en-eYm"/>
                                 </constraints>
@@ -69,12 +70,12 @@
         <!--Web View View Controller-->
         <scene sceneID="mdU-vB-xbm">
             <objects>
-                <viewController id="tvD-Fu-464" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewViewController" id="tvD-Fu-464" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FNG-aC-CLl">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Kr-rp3">
+                            <wkWebView contentMode="scaleToFill" restorationIdentifier="UnsplashWebView" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Kr-rp3">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <wkWebViewConfiguration key="configuration">
@@ -82,6 +83,10 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6td-uc-4Yr">
+                                <rect key="frame" x="0.0" y="44" width="393" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yVf-UB-YtL">
                                 <rect key="frame" x="0.0" y="0.0" width="64" height="44"/>
                                 <constraints>
@@ -91,16 +96,13 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="nav_back_button"/>
                                 <connections>
-                                    <action selector="didTapBackButton:" destination="tvD-Fu-464" eventType="touchUpInside" id="RyT-DT-7wg"/>
+                                    <action selector="didTapBackButton:" destination="tvD-Fu-464" eventType="touchUpInside" id="TGQ-ej-fHR"/>
                                 </connections>
                             </button>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="6td-uc-4Yr">
-                                <rect key="frame" x="0.0" y="44" width="393" height="4"/>
-                                <color key="progressTintColor" name="YP Black"/>
-                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tpK-sp-lQ3"/>
                         <color key="backgroundColor" name="YP White"/>
+                        <accessibility key="accessibilityConfiguration" identifier="UnsplashWebView"/>
                         <constraints>
                             <constraint firstItem="yVf-UB-YtL" firstAttribute="top" secondItem="tpK-sp-lQ3" secondAttribute="top" id="6BU-s7-AvE"/>
                             <constraint firstItem="tpK-sp-lQ3" firstAttribute="trailing" secondItem="6td-uc-4Yr" secondAttribute="trailing" id="JMw-sJ-z9p"/>
@@ -178,6 +180,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lZ3-hS-HeD" userLabel="Like Button">
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="Like button"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="2Ay-hy-NdU"/>
                                                         <constraint firstAttribute="height" constant="44" id="LBy-M9-ibH"/>
@@ -189,7 +192,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" name="YP Background"/>
+                                            <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
                                                 <constraint firstItem="rxh-au-bhT" firstAttribute="leading" secondItem="WUU-56-kRS" secondAttribute="leading" constant="16" id="4VO-6B-1z6"/>
                                                 <constraint firstItem="lZ3-hS-HeD" firstAttribute="top" secondItem="rxh-au-bhT" secondAttribute="top" id="5XW-3h-5Np"/>
@@ -202,7 +205,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="rxh-au-bhT" secondAttribute="bottom" constant="4" id="vgy-s8-yW2"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" name="YP Background"/>
+                                        <color key="backgroundColor" name="YP Black"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layerCornerRadius">
                                                 <integer key="value" value="16"/>
@@ -266,6 +269,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWx-ae-Dj0" userLabel="Back Button">
                                 <rect key="frame" x="8" y="4" width="44" height="44"/>
+                                <accessibility key="accessibilityConfiguration" label="nav back button white"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="g7Y-uB-Y3V"/>
                                     <constraint firstAttribute="height" constant="44" id="i2V-eF-TaS"/>

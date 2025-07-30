@@ -8,7 +8,9 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
 
     private enum UIConstants {
         static let nameLabelFontSize: CGFloat = 23
@@ -62,15 +64,19 @@ final class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.viewDidLoad()
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
             object: nil,
             queue: .main) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.presenter?.updateAvatar()
             }
-        updateAvatar()
+        presenter?.updateAvatar()
         initialize()
+        logOutButton.accessibilityIdentifier = AccessibilityIdentifiers.logoutButton
+        nameLabel.accessibilityIdentifier = AccessibilityIdentifiers.nameLabel
+        loginNameLabel.accessibilityIdentifier = AccessibilityIdentifiers.loginNameLabel
     }
 
     private func initialize() {
@@ -112,31 +118,24 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let imageURL = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar(url: URL) {
         avatarImageView.kf.indicatorType = .activity
-        avatarImageView.kf.setImage(with: imageURL, placeholder: UIImage(named: "placeholder_avatar")) { result in
-            switch result {
-            case .success(let value):
-                print(value.image)
-                print(value.cacheType)
-                print(value.source)
-            case .failure(let error):
-                print(error)
-            }
-        }
+        avatarImageView.kf.setImage(with: url,
+        placeholder: UIImage(named: "placeholder_avatar"))
     }
     
     @objc private func didTapLogOutButton() {
         AlertPresenter.showAlertTwoButtons(viewController: self, title: "Пока, пока!", message: "Уверены, что хотите выйти?", firstButtonTitle: "Да", secondButtonTitle: "Нет") {[weak self] in
             guard let self = self else {return}
-            self.profileLogoutService.logout()
-            guard let window = UIApplication.shared.windows.first else {return}
-            window.rootViewController = SplashViewController()
-            window.makeKeyAndVisible()
+            self.presenter?.reset()
+        }
+    }
+    
+    func setUserInfo(profile: Profile?) {
+        if let profile {
+            nameLabel.text = profile.name
+            loginNameLabel.text = profile.loginName
+            descriptionLabel.text = profile.bio
         }
     }
 }

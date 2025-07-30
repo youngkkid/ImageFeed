@@ -12,16 +12,22 @@ struct Photo: Codable {
     let size: CGSize
     let createdAt: String?
     let welcomeDescription: String?
-    let thumbImageURL: String
+    let regularImageURL: String
     let largeImageURL: String
     let isLiked: Bool
     
-    init(id: String, size: CGSize, createdAt: String?, welcomeDescription: String?, thumbImageURL: String, largeImageURL: String, isLiked: Bool) {
+    init(id: String,
+         size: CGSize,
+         createdAt: String?,
+         welcomeDescription: String?,
+         regularImageURL: String,
+         largeImageURL: String,
+         isLiked: Bool) {
         self.id = id
         self.size = size
         self.createdAt = createdAt
         self.welcomeDescription = welcomeDescription
-        self.thumbImageURL = thumbImageURL
+        self.regularImageURL = regularImageURL
         self.largeImageURL = largeImageURL
         self.isLiked = isLiked
     }
@@ -31,7 +37,7 @@ struct Photo: Codable {
         self.createdAt = photoResult.createdAt ?? ""
         self.size = CGSize(width: photoResult.width, height: photoResult.height)
         self.welcomeDescription = photoResult.description
-        self.thumbImageURL = photoResult.urls.thumb
+        self.regularImageURL = photoResult.urls.regular
         self.largeImageURL =  photoResult.urls.full
         self.isLiked = photoResult.likedByUser
     }
